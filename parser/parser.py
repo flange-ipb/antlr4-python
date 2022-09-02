@@ -20,7 +20,7 @@ def parse_r(s):
     # invoke the parser on rule "r"
     tree = parser.r()
 
-    return tree.ID().getText()
+    return list(map(lambda id: id.getText(), tree.ID()))
 
 
 class RaisingErrorListener(ErrorListener):

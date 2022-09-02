@@ -5,13 +5,14 @@ from parser.parser import parse_r
 
 
 @pytest.mark.parametrize(
-    "s, expected_id",
+    "s, expected_ids",
     [
-        ("hello world", "world"),
+        ("hello world", ["world"]),
+        ("hello abc and def and ghi", ["abc", "def", "ghi"]),
     ],
 )
-def test_parse_r_can_parse(s, expected_id):
-    assert parse_r(s) == expected_id
+def test_parse_r_can_parse(s, expected_ids):
+    assert parse_r(s) == expected_ids
 
 
 @pytest.mark.parametrize(
