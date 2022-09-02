@@ -17,5 +17,14 @@ class HelloListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by HelloParser#name.
+    def enterName(self, ctx:HelloParser.NameContext):
+        pass
+
+    # Exit a parse tree produced by HelloParser#name.
+    def exitName(self, ctx:HelloParser.NameContext):
+        pass
+
+
 
 del HelloParser

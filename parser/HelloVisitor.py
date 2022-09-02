@@ -14,5 +14,10 @@ class HelloVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by HelloParser#name.
+    def visitName(self, ctx:HelloParser.NameContext):
+        return self.visitChildren(ctx)
+
+
 
 del HelloParser

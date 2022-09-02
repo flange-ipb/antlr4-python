@@ -1,26 +1,54 @@
 from antlr4 import *
 from antlr4.error.ErrorListener import ErrorListener
 from antlr4.error.Errors import ParseCancellationException
+
 from parser.HelloLexer import HelloLexer
+from parser.HelloListener import HelloListener
 from parser.HelloParser import HelloParser
 
 
 def parse_r(s):
+    parser = _prepare_parser(s)
+
+    # invoke the parser on rule "r"
+    tree = parser.r()
+
+    walker = ParseTreeWalker()
+    listener = HelloListenerImpl()
+    walker.walk(listener, tree)
+
+    return listener.names
+
+
+def parse_name(s):
+    parser = _prepare_parser(s)
+
+    # invoke the parser on rule "name"
+    tree = parser.name()
+
+    return list(map(lambda id: id.getText(), tree.ID()))
+
+
+def _prepare_parser(s):
     stream = InputStream(s)
     lexer = HelloLexer(stream)
     token_stream = CommonTokenStream(lexer)
     parser = HelloParser(token_stream)
-
     # register our own error listeners
     lexer.removeErrorListeners()
     lexer.addErrorListener(LexerErrorListener())
     parser.removeErrorListeners()
     parser.addErrorListener(ParserErrorListener())
+    return parser
 
-    # invoke the parser on rule "r"
-    tree = parser.r()
 
-    return list(map(lambda id: id.getText(), tree.ID()))
+class HelloListenerImpl(HelloListener):
+    def __init__(self):
+        self.names = []
+
+    def enterName(self, ctx: HelloParser.NameContext):
+        full_name = " ".join(list(map(lambda id: id.getText(), ctx.ID())))
+        self.names.append(full_name)
 
 
 class RaisingErrorListener(ErrorListener):
